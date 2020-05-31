@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.PatientMapper">
+
+	<select id="selectAll" resultType="PatientVO">
+		select * from patient order by name desc
+	</select>
+	
+	<select id="selectByPno" resultType="PatientVO">
+		select * from patient where pno=#{pno}
+	</select>
+	
+	<select id="selectByName" resultType="PatientVO">
+		select * from patient where name=#{name}
+	</select>
+	
+	<select id="selectByPhone" resultType="PatientVO">
+		select * from patient where phone=#{phone}
+	</select>
+	
+	<select id="selectInfoByCno" resultType="PatientVO">
+		select * from patient where cno=#{cno}
+	</select>
+	
+	<select id="selectByCno" resultType="int">
+		select count(pno) from patient where cno=#{cno}
+	</select>
+	
+	<select id="listSearch" resultType="PatientVO">
+		select * from patient <include refid="search"></include> order by pno desc limit #{pageStart},#{perPageNum}  
+	</select>
+	
+	<sql id="search">
+		<if test="searchType=='name'.toString()">
+			where name like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='phone'.toString()">
+			where phone like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='cno'.toString()">
+			where cno like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(pno) from patient <include refid="search"></include>
+	</select>
+	
+	<update id="update">
+		update patient set cno=#{cno}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, main_doctor=#{main_doctor}, main_doctor_name=#{main_doctor_name}, memo=#{memo} where pno=#{pno} 
+	</update>
+	
+	<insert id="register">
+		insert into patient values(#{pno}, #{cno}, #{name}, #{phone}, #{birth}, #{gender}, #{main_doctor}, #{main_doctor_name}, #{memo}, #{activation})
+	</insert>
+</mapper>

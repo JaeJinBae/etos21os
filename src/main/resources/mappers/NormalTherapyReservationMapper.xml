@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.NormalTherapyReservationMapper">
+
+	<select id="selectAll" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation order by rtime asc
+	</select>
+	
+	<select id="selectByDate" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rdate=#{rdate} order by cast(rtime as unsigned) asc
+	</select>
+	
+	<select id="selectByRno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rno=#{rno}
+	</select>
+	
+	<select id="selectByDateEno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rdate=#{rdate} and eno=#{eno}
+	</select>
+	
+	<select id="selectByDatePno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rdate=#{rdate} and pno=#{pno}
+	</select>
+	
+	<select id="selectCompleteTotalCount" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where result='치료완료' and rdate like concat('%',#{rdate},'%')
+	</select>
+	
+	<select id="selectCompleteByDateEno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where result='치료완료' and eno=#{eno} and rdate like concat('%',#{rdate},'%')
+	</select>
+	
+	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
+		insert into normal_therapy_reservation values(0, #{pno}, #{pname}, #{chart_no}, #{eno}, #{memo}, #{clinic}, #{clinic_name}, #{rtype}, #{rdate}, #{rtime}, #{writer}, #{regdate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{therapist_state}, #{therapist_state_writer}, #{therapist_state_regdate}, #{result}, #{result_memo})
+	</insert>
+	
+	<update id="updateDeskState">
+		update normal_therapy_reservation set desk_state=#{desk_state}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result=#{result}, result_memo=#{result_memo} where rno=#{rno}
+	</update>
+	
+	<update id="updateTherapistState">
+		update normal_therapy_reservation set therapist_state=#{therapist_state}, therapist_state_writer=#{therapist_state_writer}, therapist_state_regdate=#{therapist_state_regdate}, result=#{result} where rno=#{rno}
+	</update>
+	
+	<update id="updateInfo">
+		update normal_therapy_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name}, memo=#{memo} where rno=#{rno}
+	</update>
+	
+	<update id="updatePatientInfo">
+		update normal_therapy_reservation set pname=#{name}, chart_no=#{cno} where pno=#{pno}
+	</update>
+	
+	<update id="cancel">
+		update normal_therapy_reservation set desk_state='예약취소', result='예약취소', desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result_memo=#{result_memo} where rno=#{rno}
+	</update>
+	
+	<delete id="deleteByRno">
+		delete from normal_therapy_reservation where rno=#{rno}
+	</delete>
+</mapper>

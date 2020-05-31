@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.HospitalInfoMapper">
+
+	<select id="selectAll" resultType="HospitalInfoVO">
+		select * from hospital_info order by no asc
+	</select>
+	
+	<select id="selectOne" resultType="HospitalInfoVO">
+		select * from hospital_info where day=#{day}
+	</select>
+	
+	<update id="updateTime">
+		update hospital_info set start_time=#{start_time}, end_time=#{end_time} where day=#{day}
+	</update>
+	
+</mapper>

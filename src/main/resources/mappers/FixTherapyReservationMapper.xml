@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.FixTherapyReservationMapper">
+
+	<select id="selectAll" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation order by rtime asc
+	</select>
+	
+	<select id="selectByDate" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where rdate=#{rdate} order by cast(rtime as unsigned) asc
+	</select>
+	
+	<select id="selectByRno" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where rno=#{rno}
+	</select>
+	
+	<select id="selectByDateEno" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where rdate=#{rdate} and eno=#{eno}
+	</select>
+	
+	<select id="selectByDatePno" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where rdate=#{rdate} and pno=#{pno}
+	</select>
+	
+	<select id="selectCompleteTotalCount" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where result='치료완료' and rdate like concat('%',#{rdate},'%')
+	</select>
+	
+	<select id="selectCompleteByDateEno" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where result='치료완료' and eno=#{eno} and rdate like concat('%',#{rdate},'%')
+	</select>
+	
+	<select id="selectByFixInfo" resultType="FixTherapyReservationVO">
+		select * from fix_therapy_reservation where pno=#{pno} and eno=#{eno} and clinic=#{clinic} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+	</select>
+	
+	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
+		insert into fix_therapy_reservation values(0, #{pno}, #{pname}, #{chart_no}, #{eno}, #{memo}, #{clinic}, #{clinic_name}, #{rtype}, #{rdate}, #{rtime}, #{fix_day}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{therapist_state}, #{therapist_state_writer}, #{therapist_state_regdate}, #{result}, #{result_memo})
+	</insert>
+	
+	<update id="updateDeskState">
+		update fix_therapy_reservation set desk_state=#{desk_state}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result=#{result}, result_memo=#{result_memo} where rno=#{rno}
+	</update>
+	
+	<update id="updateTherapistState">
+		update fix_therapy_reservation set therapist_state=#{therapist_state}, therapist_state_writer=#{therapist_state_writer}, therapist_state_regdate=#{therapist_state_regdate}, result=#{result} where rno=#{rno}
+	</update>
+	
+	<update id="updateInfo">
+		update fix_therapy_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name}, memo=#{memo} where rno=#{rno}
+	</update>
+	
+	<update id="updateInfoGroup">
+		update fix_therapy_reservation set rtime=#{newRtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name} where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+	</update>
+	
+	<update id="updatePatientInfo">
+		update fix_therapy_reservation set pname=#{name}, chart_no=#{cno} where pno=#{pno}
+	</update>
+	
+	<update id="cancel">
+		update fix_therapy_reservation set desk_state='예약취소', result='예약취소', desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result_memo=#{result_memo} where rno=#{rno}
+	</update>
+	
+	<delete id="deleteByRno">
+		delete from fix_therapy_reservation where rno=#{rno}
+	</delete>
+	
+	<delete id="deleteSchedule">
+		delete from fix_therapy_reservation where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+	</delete>
+</mapper>

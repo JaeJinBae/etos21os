@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.NormalOffMapper">
+
+	<select id="selectAll" resultType="NormalOffVO">
+		select * from normal_off order by no desc;
+	</select>
+	
+	<select id="selectByNo" resultType="NormalOffVO">
+		select * from normal_off where no=#{no};
+	</select>
+	
+	<select id="selectByDate" resultType="NormalOffVO">
+		select * from normal_off where date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+	</select>
+	
+	<select id="selectByEnoDate" resultType="NormalOffVO">
+		select * from normal_off where eno=#{eno} and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+	</select>
+	
+	<select id="listSearch" resultType="NormalOffVO">
+		select * from normal_off <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
+	</select>
+	
+	<sql id="search">
+		<if test="keyword3==''.toString()">
+			where date(startdate) <![CDATA[<=]]> date(#{keyword2}) and date(enddate) <![CDATA[>=]]> date(#{keyword1}) and eno like concat('%',#{keyword3},'%')
+		</if>
+		<if test="keyword3!=''.toString()">
+			where date(startdate) <![CDATA[<=]]> date(#{keyword2}) and date(enddate) <![CDATA[>=]]> date(#{keyword1}) and eno = #{keyword3}
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(no) from normal_off <include refid="search"></include>
+	</select>
+	
+	<insert id="register">
+		insert into normal_off values(0, #{eno}, #{etype}, #{offtype}, #{startdate}, #{enddate}, #{starttime}, #{endtime}, #{regdate}, #{writer})
+	</insert>
+	
+	<update id="update">
+		update normal_off set offtype=#{offtype}, startdate=#{startdate}, enddate=#{enddate}, starttime=#{starttime}, endtime=#{endtime} where no=#{no}
+	</update>
+	
+	<delete id="delete">
+		delete from normal_off where no=#{no}
+	</delete>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.EmployeeMapper">
+
+	<select id="selectAll" resultType="EmployeeVO">
+		select * from employee order by level asc, eno desc
+	</select>
+	
+	<select id="selectOneById" resultType="EmployeeVO">
+		select * from employee where id=#{id}
+	</select>
+	
+	<select id="selectByType" resultType="EmployeeVO">
+		select * from employee where type=#{type} order by level asc
+	</select>
+	
+	<select id="selectByEno" resultType="EmployeeVO">
+		select * from employee where eno=#{eno}
+	</select>
+	
+	<select id="listSearch" resultType="EmployeeVO">
+		select * from employee <include refid="search"></include> order by level asc, eno desc limit #{pageStart},#{perPageNum}  
+	</select>
+	
+	<sql id="search">
+		<if test="searchType=='name'.toString()">
+			where name like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='phone'.toString()">
+			where phone like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='id'.toString()">
+			where id like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(eno) from employee <include refid="search"></include>
+	</select>
+	
+	<update id="update">
+		update employee set type=#{type}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, level=#{level}, id=#{id}, pw=#{pw}, memo=#{memo} where eno=#{eno} 
+	</update>
+	
+	<update id="update2">
+		update employee set name=#{name}, phone=#{phone}, birth=#{birth}, pw=#{pw} where eno=#{eno} 
+	</update>
+	
+	<insert id="register">
+		insert into employee(eno, type, name, phone, birth, gender, level, id, pw, memo) values(#{eno}, #{type}, #{name}, #{phone}, #{birth}, #{gender}, #{level}, #{id}, #{pw},  #{memo})
+	</insert>
+</mapper>

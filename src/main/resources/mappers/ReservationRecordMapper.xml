@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.ReservationRecordMapper">
+
+	<select id="selectAll" resultType="ReservationRecordVO">
+		select * from reservation_record order by no desc
+	</select>
+	
+	<select id="selectByPno" resultType="ReservationRecordVO">
+		select * from reservation_record where pno=#{pno} order by no desc
+	</select>
+	
+	<select id="selectByRnoRType" resultType="ReservationRecordVO">
+		select * from reservation_record where rno=#{rno} and rtype=#{rtype}
+	</select>
+	
+	<select id="selectCompleteTherapyByPno" resultType="ReservationRecordVO">
+		select * from reservation_record where result='치료완료' and pno=#{pno} order by rdate desc
+	</select>
+	
+	<select id="selectCompleteClinicByPno" resultType="ReservationRecordVO">
+		select * from reservation_record where pno=#{pno} and result='접수완료' and rtype not in (select rtype from reservation_record where rtype='ft' and rtype='nt')
+	</select>
+	
+	<select id="selectByKeyword" resultType="ReservationRecordVO">
+		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc
+	</select>
+	
+	<select id="listSearch" resultType="ReservationRecordVO">
+		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc limit #{pageStart},#{perPageNum}
+	</select>
+	
+	<sql id="search">
+		where rdate like concat('%',#{keyword1},'%') or ename like concat('%',#{keyword2},'%') or rtype like concat('%',#{keyword3},'%') or result like concat('%',#{keyword4},'%')
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(no) from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%')
+	</select>
+	
+	<insert id="register">
+		insert into reservation_record values(0, #{pno}, #{pname}, #{phone}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{reception_memo}, #{therapy_info}, #{register_info}, #{result}, #{result_memo})
+	</insert>
+	
+	<update id="updateReceptionInfo">
+		update reservation_record set reception_info=#{reception_info}, result=#{result}, result_memo=#{result_memo} where rno=#{rno} and rtype=#{rtype}
+	</update>
+	
+	<update id="updateTherapyInfo">
+		update reservation_record set therapy_info=#{therapy_info}, result='치료완료' where rno=#{rno} and rtype=#{rtype}
+	</update>
+	
+	<update id="updateRdateRtime">
+		update reservation_record set ename=#{ename}, rdate=#{rdate}, rtime=#{rtime}, cname=#{cname} where rno=#{rno} and rtype=#{rtype}
+	</update>
+	
+	<update id="updatePatientInfo">
+		update reservation_record set pname=#{name} where pno=#{pno}
+	</update>
+	
+	<delete id="deleteByRnoRtype">
+		delete from reservation_record where rno=#{rno} and rtype=#{rtype}
+	</delete>
+</mapper>

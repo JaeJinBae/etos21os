@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.WaitingReservationMapper">
+
+	<select id="selectAll" resultType="WaitingReservationVO">
+		select * from waiting_reservation order by rtime asc
+	</select>
+	
+	<select id="selectByDate" resultType="WaitingReservationVO">
+		select * from waiting_reservation where rdate=#{rdate} order by rtime asc
+	</select>
+	
+	<select id="selectByNo" resultType="WaitingReservationVO">
+		select * from waiting_reservation where no=#{no}
+	</select>
+	
+	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
+		insert into waiting_reservation values(0, #{pno}, #{pname}, #{chart_no}, #{eno}, #{memo}, #{clinic}, #{clinic_name}, #{rtype}, #{rdate}, #{rtime}, #{writer})
+	</insert>
+	
+	<update id="updatePatientInfo">
+		update waiting_reservation set pname=#{name}, chart_no=#{cno} where pno=#{pno}
+	</update>
+	
+	<update id="delete">
+		delete from waiting_reservation where no=#{no}
+	</update>
+</mapper>
