@@ -2448,12 +2448,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			
 			Map<String, String> sms = new HashMap<String, String>();
 			
-			sms.put("user_id", "1clinic"); // SMS 아이디
-			sms.put("key", "dxlaks0vqpw657920a3j1jnpj5s"); //인증키
+			sms.put("user_id", "21centuryos"); // SMS 아이디
+			sms.put("key", "s6zdl39cx33t8zg2g0ojoki4bsoxpje9"); //인증키
 			
-			//1clinic 원통증 아이디
-			// dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증 인증키
-			//uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8 웹에이드 인증키
 			/******************** 인증정보 ********************/
 			
 			/******************** 전송정보 ********************/
@@ -2539,11 +2536,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			String sms_url = "https://apis.aligo.in/remain/"; // 전송요청 URL
 			
 			String sms = "";
-			sms += "user_id=" + "1clinic"; // SMS 아이디 
-			sms += "&key=" + "dxlaks0vqpw6579w9nj1jnpj5s"; //인증키
-			//1clinic 원마취아이디
-			//dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증인증키
-			//uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8 웹에이드 인증키
+			sms += "user_id=" + "21centuryos"; // SMS 아이디 
+			sms += "&key=" + "s6zdl39cx33t8zg2g0ojoki4bsoxpje9"; //인증키
+			
 			/******************** 인증정보 ********************/
 			
 			URL url = new URL(sms_url);
@@ -2912,12 +2907,10 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			
 			Map<String, String> sms = new HashMap<String, String>();
 			
-			sms.put("user_id", "1clinic"); // SMS 아이디
-			sms.put("key", "dxlaks0vqpw6579wy20a3j"); //인증키
+			sms.put("user_id", "21centuryos"); // SMS 아이디
+			sms.put("key", "s6zdl39cx33t8zg2g0ojoki4bsoxpje9"); //인증키
 			
-			//1clinic 원통증 아이디
-			// dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증 인증키
-			//uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8 웹에이드 인증키
+			
 			/******************** 인증정보 ********************/
 			
 			/******************** 전송정보 ********************/
